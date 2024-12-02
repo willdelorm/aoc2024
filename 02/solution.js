@@ -69,3 +69,109 @@ function countSafeReports(filePath) {
 }
 
 console.log(countSafeReports("input.txt"));
+
+/** --- Part 2 ---
+ * The Problem Dampener module can remove a single level to make it safe
+ *
+ * For each report:
+ *  Dampener is not used
+ *
+ *  Determine direction
+ *    If direction is unsafe, remove and try again
+ *    If unsafe again, report is unsafe
+ *
+ *  Loop through levels:
+ *    last, curr levels
+ *    If (direction wrong OR diff bad) AND dampener good:
+ *      Use Dampener
+ *      If next:
+ *        curr = next
+ *        If (direction wrong OR diff bad), report bad
+ *        Else, continue
+ *      Else, report good
+ *    Else if (direction wrong OR diff bad) AND dampener bad, report bad
+ *    Else, continue
+ *  Report good
+ */
+
+function countSafeReportsWithDampener(filePath) {
+  const reports = getInputData(filePath).split("\n");
+  let safeReportCount = 0;
+
+  reports.forEach((report) => {
+    const levels = report.split(" ").map(Number);
+    let canUseDampener = true;
+    console.log(levels);
+
+    //* Determine direction
+    let reportDirection = getLevelDirection(levels[0], levels[1]);
+
+    if (reportDirection === "unsafe") {
+      canUseDampener = false;
+      if (getLevelDirection(levels[0], levels[2]) === "unsafe") {
+        console.log("bad starting direction");
+        return;
+      } else {
+        levels.splice(1, 1);
+        reportDirection = getLevelDirection(levels[0], levels[1]);
+      }
+    }
+
+    //* Check that direction is correct
+    let isTolerableReport = true;
+    let lastLevel, currentLevel;
+    for (let i = 1; i < levels.length; i++) {
+      lastLevel = levels[i - 1];
+      currentLevel = levels[i];
+      let stepDirection = getLevelDirection(lastLevel, currentLevel);
+      const hasTolerableDirection = matchesDirection(
+        reportDirection,
+        stepDirection
+      );
+    }
+
+    //* Loop through levels
+    for (let i = 1; i < levels.length; i++) {
+      lastLevel = levels[i - 1];
+      currentLevel = levels[i];
+
+      let stepDirection = getLevelDirection(lastLevel, currentLevel);
+      const hasTolerableDirection = matchesDirection(
+        reportDirection,
+        stepDirection
+      );
+      const hasTolerableDifference = differsGradually(lastLevel, currentLevel);
+      const isTolerableStep = hasTolerableDirection && hasTolerableDifference;
+      if (!isTolerableStep && !canUseDampener) {
+        //* If (direction wrong OR diff bad) AND dampener bad, report bad
+        isTolerableReport = false;
+        return;
+      } else if (!isTolerableStep && canUseDampener) {
+        //* Else if (direction wrong OR diff bad) AND dampener good:
+        canUseDampener = false;
+        //* If next:
+        if (levels[i + 1]) {
+          //* curr = next
+          const nextLevel = levels[i + 1];
+          stepDirection = getLevelDirection(lastLevel, nextLevel);
+          if (!isTolerableStep) {
+            //* If (direction wrong OR diff bad), report bad
+            isTolerableReport = false;
+            return;
+          } else {
+            //* Else, remove bad reading
+            levels.splice(i, 1);
+          }
+        }
+      } else {
+        levels.splice(i, 1);
+      }
+    }
+
+    if (isTolerableReport) safeReportCount++;
+  });
+
+  return safeReportCount;
+}
+
+console.log(countSafeReportsWithDampener("input.txt"));
