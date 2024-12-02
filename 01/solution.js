@@ -10,20 +10,22 @@
  * 2. Sort the arrays
  * 3. Loop through each index, calculate the difference and add it to the total
  */
-import { readFileSync } from "node:fs";
+import { readFileSync } from "fs";
 
-function getLocationIds(input) {
-  const fileData = readFileSync(input, "utf8", (err, data) => {
+function getInputData(filePath) {
+  const inputData = readFileSync(filePath, "utf8", (err, data) => {
     if (err) throw err;
     return data;
   });
 
-  return fileData.match(/[0-9]+/g);
+  return inputData;
 }
 
-function getLists(locationIds) {
+function getListsFromInput(inputData) {
+  const locationIds = inputData.match(/[0-9]+/g);
   const listLeft = [],
     listRight = [];
+
   locationIds.forEach((locationId, index) => {
     if (index % 2 === 0) {
       listLeft.push(locationId);
@@ -35,12 +37,11 @@ function getLists(locationIds) {
   return { listLeft, listRight };
 }
 
-function calculateTotalDistance(input) {
+function calculateTotalDistance(filePath) {
   console.time("calculateTotalDistance");
 
-  const locationIds = getLocationIds(input);
-  const { listLeft, listRight } = getLists(locationIds);
-
+  const inputData = getInputData(filePath);
+  const { listLeft, listRight } = getListsFromInput(inputData);
   listLeft.sort();
   listRight.sort();
 
@@ -50,11 +51,11 @@ function calculateTotalDistance(input) {
       rightId = Number(listRight[index]);
     totalDistance += Math.abs(leftId - rightId);
   });
+
   console.timeEnd("calculateTotalDistance");
   return totalDistance;
 }
 
-console.log(calculateTotalDistance("testData.txt"));
 console.log(calculateTotalDistance("input.txt"));
 
 /**
@@ -67,10 +68,11 @@ console.log(calculateTotalDistance("input.txt"));
  * 2. Create object of location IDs in right list and their number of appearances
  * 3. Step through left list, check object for multiplier and add to total
  */
-function calculateSimilarityScore(input) {
+function calculateSimilarityScore(filePath) {
   console.time("calculateSimilarityScore");
-  const locationIds = getLocationIds(input);
-  const { listLeft, listRight } = getLists(locationIds);
+
+  const inputData = getInputData(filePath);
+  const { listLeft, listRight } = getListsFromInput(inputData);
 
   const listMultipliers = {};
   listRight.forEach((locationId) => {
@@ -93,5 +95,4 @@ function calculateSimilarityScore(input) {
   return totalSimilarityScore;
 }
 
-console.log(calculateSimilarityScore("testData.txt"));
 console.log(calculateSimilarityScore("input.txt"));
