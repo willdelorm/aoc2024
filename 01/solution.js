@@ -10,16 +10,7 @@
  * 2. Sort the arrays
  * 3. Loop through each index, calculate the difference and add it to the total
  */
-import { readFileSync } from "fs";
-
-function getInputData(filePath) {
-  const inputData = readFileSync(filePath, "utf8", (err, data) => {
-    if (err) throw err;
-    return data;
-  });
-
-  return inputData;
-}
+import { getInputData } from "../utils/utils";
 
 function getListsFromInput(inputData) {
   const locationIds = inputData.match(/[0-9]+/g);
