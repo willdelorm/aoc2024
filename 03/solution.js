@@ -46,7 +46,6 @@ function getTotalResultWithConditionals(filePath) {
 
   const INSTRUCTIONS_REGEX = /(mul\(\d{1,3},\d{1,3}\))|(do\(\))|(don't\(\))/g;
   const instructions = data.match(INSTRUCTIONS_REGEX);
-  console.log(instructions);
 
   let totalResult = 0;
   let isEnabled = true;
