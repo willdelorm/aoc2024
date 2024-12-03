@@ -21,3 +21,23 @@ Instead of an egregious amount of looping, my final solution only loops twice. T
 My output was returning NaN. I rushed my part 2 solution and so wasn't checking my code as I went along (like I did for part 1). I forgot that if the ID didn't appear in the right list, it wouldn't have a value to return. The quick fix was to create a ternary operator to return 0 if the location key didn't exist.
 
 Ta da! Day 1 in the books. I think this is the first time I'm starting on time. Looking forward to keeping up with this!
+
+### Day 2: Red-Nosed Reports
+
+~Returning to this once Part 2 is complete~
+
+### Day 3: Mull It Over
+
+After yesterday's crisis of faith, I had a much smoother experience working on today's puzzle. Finding valid segments within a larger string sent my regular expression alarms blaring! I had to look up a cheat sheet (does anyone not?) for a few pieces, such as quantifying a range for the number lengths. Although the author didn't say there would be larger numbers, it was still a safe bet to check.
+
+After looking at other submissions for Day 1, I learned a neat shortcut to turn string-typed numbers into Numbers, array.map(Number) which greatly simplified my conversions.
+
+Another discovery was the method imul() from the Math package. Using this, I was able to use the spread operator to pass the digits to multiply which looks neater in my mind.
+
+Part 2 came easily enough to me. I extended my initial regex to include the do() and don't() instructions, and added a Boolean variable to track whether instruction reading was enabled.
+
+I got a little regex-happy to check what kind of instruction each entry was, using the ? quantifier to make sure I grabbed "don't" instead of just "don" with my initial type checker. A switch statement seemed perfect for this situation to toggle the Boolean or try executing the mul() instruction.
+
+I gotta say, half the time I use switch statements, I don't have a real default action. I plopped in a silly "error" statement just in case.
+
+Glad to see day 2 wasn't a sign of the speed with which the problems would increase in difficulty. Looking forward to what challenges await tomorrow!
