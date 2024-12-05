@@ -1,56 +1,80 @@
 import { getInputData } from "../utils/utils.js";
 
-function countXMAS(fp) {
-  const data = getInputData(fp).split("\r\n");
+const ADJACENT_SPACES = [
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [0, -1],
+  [0, 1],
+  [1, -1],
+  [1, 0],
+  [1, 1],
+];
+
+function searchWords(fp, str) {
+  function nextStep(pos, dir, slicedArr) {
+    const [nextX, nextY] = [pos[0] + dir[0], pos[1] + dir[1]];
+    // console.log([nextX, nextY]);
+
+    // Is next pos valid?
+    if (nextX < 0 || nextX >= width || nextY < 0 || nextY >= height) {
+      // console.log("Off grid");
+      return 0;
+    }
+
+    // Is next pos the letter we want?
+    const tapePos = width * nextY + nextX;
+    if (dataTape[tapePos] !== slicedArr[0]) {
+      // console.log("Wrong letter", dataTape[[nextX, nextY].join("")]);
+      return 0;
+    }
+
+    // Is next pos the final letter?
+    if (slicedArr.length !== 1) {
+      // console.log("Keep going!");
+      return nextStep([nextX, nextY], dir, slicedArr.slice(1));
+    }
+    // console.log("We have a winner!");
+    return 1;
+  }
+
+  // console.log("--- Begin XMAS count ---");
+  const data = getInputData(fp).split("\n");
   const dataTape = data.join("");
+  const strArr = str.split("");
 
   // Word Search dimensions
   const width = data[0].length;
   const height = data.length;
+  // console.log(`Grid dimensions:`, [width, height]);
 
-  // Get coordinates of all X's
-  let xArr = [];
-  for (let i = 0; i < dataTape.length; i++) {
-    let char = dataTape[i];
-    // Coordinates of char
-    let x = Math.floor(i / width);
-    let y = i % height;
+  // Get position of all instances of first letter
+  let firstLetters = [];
+  dataTape.split("").forEach((char, i) => {
+    let x = i % width;
+    let y = Math.floor(i / height);
 
-    if (char === "X") {
-      xArr.push([x, y]);
+    if (char === strArr[0]) {
+      firstLetters.push([x, y]);
     }
-  }
-  console.log(xArr);
+  });
+  // console.log("All X positions:\n", firstLetters);
 
-  // Build adjacent cells to check
-  const relativelyAdjacent = [];
-  for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-      // Ignore center because X
-      if (i === 0 && j === 0) continue;
-      relativelyAdjacent.push([i, j]);
-    }
-  }
-  console.log(relativelyAdjacent);
-
+  // Validate each X
   let foundWords = 0;
-  let xmasArr = ["M", "A", "S"];
-  xArr.forEach(([x, y]) => {
-    console.log(x, y);
-    relativelyAdjacent.forEach(([aX, aY]) => {
-      if (nextStep(aX, aY, xmasArr)) {
+  firstLetters.forEach((pos) => {
+    ADJACENT_SPACES.forEach((dir) => {
+      // console.log("checking", pos, "toward", dir);
+      if (nextStep(pos, dir, strArr.slice(1))) {
         foundWords++;
       }
     });
   });
+
+  console.log(foundWords);
 }
 
-function nextStep(aX, aY, arr) {
-  if (dataTape[[x + aX, y + aY].join("")] === arr[0]) {
-    if (xmasArr[0] === "S") return 1;
-    return nextStep(aX, aY, arr.slice(1));
-  }
-  return 0;
-}
-
-countXMAS("test.txt");
+searchWords("test.txt", "XMAS");
+searchWords("input.txt", "XMAS");
+searchWords("test.txt", "MAS");
+searchWords("input.txt", "MAS");
