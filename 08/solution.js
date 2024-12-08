@@ -6,8 +6,6 @@ function main(fp, withHarmonics = false) {
   const width = data[0].length;
   const height = data.length;
 
-  function getAntinodes() {}
-
   const antennaGroups = {};
   dataTape.split("").forEach((char, i) => {
     let x = i % width;
