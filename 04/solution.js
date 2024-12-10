@@ -19,7 +19,7 @@ const ADJACENT_SPACES = [
 ];
 
 function main(fp, word) {
-  const data = getInputData(fp).split("\r\n");
+  const data = getInputData(fp).split(/\r?\n/);
   const dataTape = data.join("");
   const wordChars = word.split("");
 
