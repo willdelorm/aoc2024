@@ -1,21 +1,24 @@
 /**
- * Day 2: Red-Nosed Reports
- *
- * --- Part 1 ---
- * Each line is a report, and each number is a level.
- * A report is deemed "safe" if:
- * - Levels are all increasing or all decreasing
- * - Any two adjacent levels differ by 1-3
- * Find total number of "safe" reports
- *
- * 1. Loop through each line
- *    a. Determine if readings are generally increasing or decreasing
- *    b. If so, find the min and max change in levels
- *    c. If the min is >=1 and max is <=3, it's safe. Otherwise, not safe
- *    d. Add safe reports to count
- * 6. Return count
+ *  ================================
+ *  === Day 2: Red-Nosed Reports ===
+ *  ================================
  */
+
 import { getInputData } from "../utils/utils.js";
+
+//* Part 1
+function countSafeReports(fp, dampener = false) {
+  const data = getInputData(fp).split("\n");
+
+  let safeReportCount = 0;
+  data.forEach((report) => {
+    const levels = report.split(" ").map(Number);
+    if (!dampener && isSafe(levels)) safeReportCount++;
+    if (dampener && isSafeDampened(levels)) safeReportCount++;
+  });
+
+  return safeReportCount;
+}
 
 function isSafe(nums) {
   const diffs = [];
@@ -39,29 +42,7 @@ function isSafe(nums) {
   return 0;
 }
 
-function countSafeReports(filePath, dampener = false) {
-  const reports = getInputData(filePath).split("\n");
-  let safeReportCount = 0;
-
-  reports.forEach((report) => {
-    const levels = report.split(" ").map(Number);
-    if (!dampener && isSafe(levels)) safeReportCount++;
-    if (dampener && isSafeDampened(levels)) safeReportCount++;
-  });
-
-  return safeReportCount;
-}
-
-/** --- Part 2 ---
- * The Problem Dampener module can remove a single level to make it safe
- *
- * For each report:
- * 1. If the report is safe normally, it's safe
- * 2. Otherwise, try removing one level and check if safe
- *    a. If safe, then it's safe!
- * 3. If no modified report is safe, it's not safe
- */
-
+//* Part 2
 function isSafeDampened(nums) {
   if (isSafe(nums)) return 1;
   else {
@@ -74,5 +55,5 @@ function isSafeDampened(nums) {
   return 0;
 }
 
-console.log(countSafeReports("input.txt"));
-console.log(countSafeReports("input.txt", true));
+console.log("Part 1:", countSafeReports("input.txt"));
+console.log("Part 2:", countSafeReports("input.txt", true));
