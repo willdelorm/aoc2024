@@ -24,7 +24,9 @@ Ta da! Day 1 in the books. I think this is the first time I'm starting on time. 
 
 ### Day 2: Red-Nosed Reports
 
-~Returning to this once Part 2 is complete~
+So I suuuuper overthought this challenge and only completed it on day 3 after I peeked at another user's solution in a different language. While I am bummed I didn't figure it out myself, I am pleased with how I adapted the thinking to JavaScript.
+
+My initial idea for this challenge involved trying to squeeze as much information from adjacent elements before moving on to the next pair. With only part of the info, I was really struggling to see the big picture (and the big answer). I think I was attempting to answer each line in O(n) instead of O(2-3n). Anyway, big mess. That code was ugly as sin, and only got worse in part 2 when I was trying to track a dampener being spent and reusing a lot of code. Not DRY at all.
 
 ### Day 3: Mull It Over
 

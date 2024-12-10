@@ -39,4 +39,16 @@ export class DoublyLinkedList {
       }
     }
   }
+
+  print() {
+    let output = "";
+    if (!this.isEmpty()) {
+      let curr = this.head;
+      while (curr !== null) {
+        output += curr.data;
+        curr = curr.next;
+      }
+    }
+    return output;
+  }
 }
