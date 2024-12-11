@@ -18,10 +18,10 @@ const ADJACENT_SPACES = [
   [1, 1],
 ];
 
-function main(fp, word) {
+function findXmas(fp) {
   const data = getInputData(fp).split(/\r?\n/);
   const dataTape = data.join("");
-  const wordChars = word.split("");
+  const wordChars = "XMAS".split("");
 
   const width = data[0].length;
   const height = data.length;
@@ -68,5 +68,58 @@ function main(fp, word) {
   return count;
 }
 
-console.log(main("test.txt", "XMAS")); // 18
-console.log(main("input.txt", "XMAS"));
+//* Part 2
+const CORNER_SPACES = [
+  [-1, -1],
+  [-1, 1],
+  [1, -1],
+  [1, 1],
+];
+
+const VALID_CORNERS = ["MMSS", "MSMS", "SMSM", "SSMM"];
+
+function findXDashMas(fp) {
+  const data = getInputData(fp).split(/\r?\n/);
+  const dataTape = data.join("");
+  const width = data[0].length;
+  const height = data.length;
+
+  // Find the A's
+  let aPositions = [];
+  dataTape.split("").forEach((char, i) => {
+    let x = i % width;
+    let y = Math.floor(i / height);
+
+    if (char === "A") {
+      aPositions.push([x, y]);
+    }
+  });
+
+  //* Check corners for M's and S's
+  let count = 0;
+  aPositions.forEach((pos) => {
+    const cornerVals = CORNER_SPACES.reduce((vals, dir) => {
+      const [cornerX, cornerY] = [pos[0] + dir[0], pos[1] + dir[1]];
+      if (
+        cornerX < 0 ||
+        cornerX > width - 1 ||
+        cornerY < 0 ||
+        cornerY > height - 1
+      )
+        return;
+      const tapePos = width * cornerY + cornerX;
+
+      if (dataTape[tapePos] === "M" || dataTape[tapePos] === "S") {
+        return vals + dataTape[tapePos];
+      }
+      return vals;
+    }, "");
+    if (VALID_CORNERS.includes(cornerVals)) count++;
+  });
+
+  return count;
+}
+
+// console.log(findXmas("test.txt")); // 18
+console.log("Part 1:", findXmas("input.txt"));
+console.log("Part 2:", findXDashMas("input.txt"));
