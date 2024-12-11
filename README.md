@@ -53,3 +53,13 @@ Grids make their return to AoC! I enjoyed setting up the abilities to read this 
 In part 1, I traversed the input and saved the locations for every instance of the letter X. Once I had that, I took each instance and searched for instances of "XMAS" by checking each adjacent space. Achieving this involved a bit of recursion which, to my surprise, came pretty quickly to me! Only when it reached the final letter "S" was that instance considered a success and added to the count.
 
 I struggled to solve part 2 for a while due to thinking that I _must_ use some of part 1 to do it. When I took a step back, I realized I could forego recursion and answer this challenge more simply. This time, I found all the instances of "A", got the values from each corner where valid (ignoring out of bounds positions) and checked them against the 4 valid options. I deserved a forehead smack when this answer finally came to me!
+
+### Day 11: Plutonian Pebbles
+
+Memoization to the rescue! After reading today's challenge, I brainstormed a few ways to tackle the solution. Nesting for loops this way and that would work, but became exponentially challenging to result in an answer on Part 2.
+
+Recursion seemed like the right answer because it would reduce the amount of memory being used at one time. With each starting value, the program would drill down until it ran out of blinks, then return the total number of stones within each branch. This worked fine for part 1 because the number of blinks was relatively few, so my computer was able to handle the number of computations.
+
+When I threw part 2's whopping 75 blinks at my program, my computer's fans went into overdrive as it tried to calculate the exponentially-larger number of computations. After 10 minutes, I killed the program and considered what to do. I was certain my logic so far was sound, so I had to add something here. Then it dawned on me that there was likely many calculations that repeat throughout the run. If I could save these values the first time, it would drastically reduce how much work my program would have to do.
+
+I had to look up memoization to refresh myself on how to structure it. Once I had done that, I was able to plug it into my recursive function and WOW! I expected it to run faster, but part 2 went from a potentially-infinite run time to a measly 153ms! Even part 1 improved by roughly 80%. I'll have to keep that trusty memo around for the rest of the month, it's sure to come in handy!
