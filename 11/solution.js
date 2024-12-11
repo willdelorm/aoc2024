@@ -10,49 +10,45 @@ import { getInputData } from "../utils/utils.js";
 function main(fp, blinks = 1) {
   const data = getInputData(fp).split(" ");
 
-  let stones = [];
-  data.forEach((stone) => {
-    stones.push(blinkTransform(stone, blinks));
-  });
+  let stoneCounts = data.map((stone) => blinkTransform(stone, blinks));
 
-  return stones.reduce((acc, val) => acc + val, 0);
-
-  // let stones = [...data];
-  // for (let i = 0; i < blinks; i++) {
-  //   const newStones = [];
-  //   stones.forEach((stone) => {
-  //     ``;
-  //     if (stone == 0) newStones.push(1);
-  //     else if (String(stone).length % 2 === 0) {
-  //       newStones.push(
-  //         Number(String(stone).slice(0, String(stone).length / 2))
-  //       );
-  //       newStones.push(Number(String(stone).slice(String(stone).length / 2)));
-  //     } else newStones.push(stone * 2024);
-  //   });
-  //   stones = [...newStones];
-  // }
-
-  // return stones.length;
+  return stoneCounts.reduce((sum, count) => sum + count, 0);
 }
 
-function blinkTransform(stone, blinks) {
+function blinkTransform(stone, blinks, memo = {}) {
+  const key = `${stone},${blinks}`;
+  if (memo[key]) return memo[key];
+
   const newStones = [];
+  const stoneStr = String(stone);
 
-  if (stone == 0) newStones.push(1);
-  else if (String(stone).length % 2 === 0) {
-    newStones.push(Number(String(stone).slice(0, String(stone).length / 2)));
-    newStones.push(Number(String(stone).slice(String(stone).length / 2)));
-  } else newStones.push(stone * 2024);
+  if (stone == 0) {
+    newStones.push(1);
+  } else if (stoneStr.length % 2 === 0) {
+    newStones.push(
+      Number(stoneStr.slice(0, stoneStr.length / 2)),
+      Number(stoneStr.slice(stoneStr.length / 2))
+    );
+  } else {
+    newStones.push(stone * 2024);
+  }
 
-  if (blinks === 1) return newStones.length;
-  if (newStones.length === 1) return blinkTransform(newStones[0], blinks - 1);
-  return (
-    blinkTransform(newStones[0], blinks - 1) +
-    blinkTransform(newStones[1], blinks - 1)
-  );
+  const nextBlink = blinks - 1;
+
+  let result;
+  if (nextBlink === 0) {
+    result = newStones.length;
+  } else if (newStones.length === 1) {
+    result = blinkTransform(newStones[0], nextBlink, memo);
+  } else {
+    result =
+      blinkTransform(newStones[0], nextBlink, memo) +
+      blinkTransform(newStones[1], nextBlink, memo);
+  }
+
+  memo[key] = result;
+  return memo[key];
 }
 
-console.log("Test:", main("test.txt", 25)); //55312
 console.log("Part 1:", main("input.txt", 25));
-// console.log("Part 2:", main("input.txt", 75));
+console.log("Part 2:", main("input.txt", 75));
