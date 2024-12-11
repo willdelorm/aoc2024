@@ -8,25 +8,27 @@ Happy December! For this year's [Advent of Code](https://adventofcode.com/), I w
 
 ### Day 1: Historian Hysteria
 
-These challenges force me to refresh myself on simple concepts like reading files and regular expressions. I remember having a lot of trouble getting Node to read the files when I participated in my first AoC. What a relief it was to set up that process quickly this time around.
+These challenges force me to refresh myself on simple concepts like reading files and regular expressions. I remember having a lot of trouble getting Node to read the files when I participated in my first AoC.
 
-My initial thought on creating the two lists required traversing the initial data twice (silly me). I quickly pivoted to traversing the location IDs once and pushing to the correct array based on index.
+Preparing the data for today's challenges was simple enough. I created an array of all the numbers, then traversed that array and pushed each number into two lists based on index. Lastly, I sorted the lists from smallest to largest.
 
-Calculating the distances was relatively simple, but a good first day challenge. Sorting the lists and finding the difference was straight-forward. I don't think the example data made it clear whether the right-list value could be smaller OR larger than the left-list value. Just in case, I calculated the absolute value of the difference.
+Calculating the distances was relatively simple, but a good first day challenge. The example data didn't specify whether the right number would always be larger than the left. To be safe, I calculated the absolute value of the difference.
 
-Part 2 could become an efficiency nightmare. Again, my initial plan was to traverse the left list and count frequency of the right list on each loop. Red flags immediately popped up in my head because that concept would have a time efficiency of O(n^2), a big no no in programming.
+For part 2, I wanted to avoid a potential O(n^2) algorithm. Traversing the left list and counting frequency of the right list on each iteration would be very inefficient. So I created an object with the unique values as the key and the number of appearances in the second list as the value. I then traversed the first list, checked the object for its multiplier value and added it to the total score.
 
-Instead of an egregious amount of looping, my final solution only loops twice. The first loop created an object with the location ID as the key and the number of appearances as the value. The second loop traverses the left list, checks the object for its multiplier value and adds it to the total score.
-
-My output was returning NaN. I rushed my part 2 solution and so wasn't checking my code as I went along (like I did for part 1). I forgot that if the ID didn't appear in the right list, it wouldn't have a value to return. The quick fix was to create a ternary operator to return 0 if the location key didn't exist.
+My output was returning NaN on my first run. I forgot that if the ID didn't appear in the right list, it wouldn't have a value to return. The answer for this was to create a ternary operator to return 0 if the key didn't exist.
 
 Ta da! Day 1 in the books. I think this is the first time I'm starting on time. Looking forward to keeping up with this!
 
 ### Day 2: Red-Nosed Reports
 
-So I suuuuper overthought this challenge and only completed it on day 3 after I peeked at another user's solution in a different language. While I am bummed I didn't figure it out myself, I am pleased with how I adapted the thinking to JavaScript.
+I initially got too granular with reading the data and spun myself in circles. On day 3, I ended up looking at another user's submission in Python which gave me direction to solving it in JavaScript.
 
-My initial idea for this challenge involved trying to squeeze as much information from adjacent elements before moving on to the next pair. With only part of the info, I was really struggling to see the big picture (and the big answer). I think I was attempting to answer each line in O(n) instead of O(2-3n). Anyway, big mess. That code was ugly as sin, and only got worse in part 2 when I was trying to track a dampener being spent and reusing a lot of code. Not DRY at all.
+Looping through each line of data, I created a new array of the difference between adjacent values and counted how many of those differences were positive and negative. These counts showed whether the differences were predominantly positive or negative. As long as one of the conditions were true, I checked that the smallest and largest differences fit within the range 1-3, inclusive. If the report fit, I incremented the number of safe reports.
+
+For part 2, I first checked to see if the report was safe without using a dampener. If not, I looped thru the report, removing one value at a time to see if it would be safe without that value.
+
+While the solution wasn't solely my own, I learned quite a lot, including determining whether a set of values is predominantly positive or negative. Rather than wrecking my brain over challenges I struggle on, I am choosing to learn from others.
 
 ### Day 3: Mull It Over
 
@@ -43,3 +45,11 @@ I got a little regex-happy to check what kind of instruction each entry was, usi
 I gotta say, half the time I use switch statements, I don't have a real default action. I plopped in a silly "error" statement just in case.
 
 Glad to see day 2 wasn't a sign of the speed with which the problems would increase in difficulty. Looking forward to what challenges await tomorrow!
+
+### Day 4: Ceres Search
+
+Grids make their return to AoC! I enjoyed setting up the abilities to read this 2-dimensional input data. This year, I found the dimensions of the grid, then joined it all into a single line of "tape" to make iterating thru the data more efficient.
+
+In part 1, I traversed the input and saved the locations for every instance of the letter X. Once I had that, I took each instance and searched for instances of "XMAS" by checking each adjacent space. Achieving this involved a bit of recursion which, to my surprise, came pretty quickly to me! Only when it reached the final letter "S" was that instance considered a success and added to the count.
+
+I struggled to solve part 2 for a while due to thinking that I _must_ use some of part 1 to do it. When I took a step back, I realized I could forego recursion and answer this challenge more simply. This time, I found all the instances of "A", got the values from each corner where valid (ignoring out of bounds positions) and checked them against the 4 valid options. I deserved a forehead smack when this answer finally came to me!
