@@ -45,3 +45,11 @@ I got a little regex-happy to check what kind of instruction each entry was, usi
 I gotta say, half the time I use switch statements, I don't have a real default action. I plopped in a silly "error" statement just in case.
 
 Glad to see day 2 wasn't a sign of the speed with which the problems would increase in difficulty. Looking forward to what challenges await tomorrow!
+
+### Day 4: Ceres Search
+
+Grids make their return to AoC! I enjoyed setting up the abilities to read this 2-dimensional input data. This year, I found the dimensions of the grid, then joined it all into a single line of "tape" to make iterating thru the data more efficient.
+
+In part 1, I traversed the input and saved the locations for every instance of the letter X. Once I had that, I took each instance and searched for instances of "XMAS" by checking each adjacent space. Achieving this involved a bit of recursion which, to my surprise, came pretty quickly to me! Only when it reached the final letter "S" was that instance considered a success and added to the count.
+
+I struggled to solve part 2 for a while due to thinking that I _must_ use some of part 1 to do it. When I took a step back, I realized I could forego recursion and answer this challenge more simply. This time, I found all the instances of "A", got the values from each corner where valid (ignoring out of bounds positions) and checked them against the 4 valid options. I deserved a forehead smack when this answer finally came to me!
