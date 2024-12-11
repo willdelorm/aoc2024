@@ -120,6 +120,5 @@ function findXDashMas(fp) {
   return count;
 }
 
-// console.log(findXmas("test.txt")); // 18
 console.log("Part 1:", findXmas("input.txt"));
 console.log("Part 2:", findXDashMas("input.txt"));
