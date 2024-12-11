@@ -22,9 +22,13 @@ Ta da! Day 1 in the books. I think this is the first time I'm starting on time. 
 
 ### Day 2: Red-Nosed Reports
 
-So I suuuuper overthought this challenge and only completed it on day 3 after I peeked at another user's solution in a different language. While I am bummed I didn't figure it out myself, I am pleased with how I adapted the thinking to JavaScript.
+I initially got too granular with reading the data and spun myself in circles. On day 3, I ended up looking at another user's submission in Python which gave me direction to solving it in JavaScript.
 
-My initial idea for this challenge involved trying to squeeze as much information from adjacent elements before moving on to the next pair. With only part of the info, I was really struggling to see the big picture (and the big answer). I think I was attempting to answer each line in O(n) instead of O(2-3n). Anyway, big mess. That code was ugly as sin, and only got worse in part 2 when I was trying to track a dampener being spent and reusing a lot of code. Not DRY at all.
+Looping through each line of data, I created a new array of the difference between adjacent values and counted how many of those differences were positive and negative. These counts showed whether the differences were predominantly positive or negative. As long as one of the conditions were true, I checked that the smallest and largest differences fit within the range 1-3, inclusive. If the report fit, I incremented the number of safe reports.
+
+For part 2, I first checked to see if the report was safe without using a dampener. If not, I looped thru the report, removing one value at a time to see if it would be safe without that value.
+
+While the solution wasn't solely my own, I learned quite a lot, including determining whether a set of values is predominantly positive or negative. Rather than wrecking my brain over challenges I struggle on, I am choosing to learn from others.
 
 ### Day 3: Mull It Over
 
