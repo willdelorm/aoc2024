@@ -14,7 +14,6 @@ function main(fp) {
     }
     if (val === id) id++;
   });
-  // console.log(fileSystem.print());
 
   // Condense data
   let nextEmpty = fileSystem.head;
@@ -22,26 +21,30 @@ function main(fp) {
   while (nextEmpty !== fileSystem.tail) {
     if (nextEmpty.data !== ".") {
       nextEmpty = nextEmpty.next;
+      continue;
     }
-    if (nextEmpty === lastFile) break;
-    while (lastFile.data === ".") lastFile = lastFile.prev;
+    if (lastFile.data === ".") {
+      lastFile = lastFile.prev;
+      continue;
+    }
+    if (lastFile.next === nextEmpty) break;
 
     nextEmpty.data = lastFile.data;
     lastFile.data = ".";
   }
-  // console.log(fileSystem.print());
 
   // Calculate filesystem checksum
   let checksum = 0;
   let curr = fileSystem.head,
     index = 0;
-  while (curr !== null) {
+  while (curr) {
     if (curr.data !== ".") checksum += Number(curr.data) * index;
     curr = curr.next;
     index++;
   }
+
   return checksum;
 }
 
-console.log("test", main("test.txt"));
-// console.log("input", main("input.txt"));
+console.log("test", main("test.txt")); // clears
+console.log("input", main("input.txt")); // too high
